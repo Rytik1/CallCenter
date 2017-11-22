@@ -1,0 +1,72 @@
+<apex:page id="Complain_page" standardController="Product2" recordSetVar="products">
+     <apex:form>
+    <apex:pageBlock title="Product list" id="product_list">
+
+        <!-- Contacts List -->
+        <apex:pageBlockTable value="{! products }" var="pr">
+            <apex:column >
+                <apex:outputLink value="https://mail.ru/">
+                        {! pr.Name }
+                </apex:outputLink>
+                </apex:column >
+            <apex:column value="{! pr.Price__c }"/>
+            <apex:column>
+              <apex:repeat value="{!pr.PricebookEntries}" var="priceEntry">
+                    {! priceEntry.UnitPrice}
+
+                </apex:repeat>
+            </apex:column>
+
+
+        </apex:pageBlockTable>
+
+        <!-- Pagination -->
+        <table style="width: 100%"><tr>
+
+            <td>
+                Page: <apex:outputText
+                    value=" {!PageNumber} of {! CEILING(ResultSize / PageSize) }"/>
+            </td>
+
+            <td align="center">
+                <!-- Previous page -->
+                <!-- active -->
+                <apex:commandLink action="{! Previous }" value="« Previous"
+                                  rendered="{! HasPrevious }"/>
+                <!-- inactive (no earlier pages) -->
+                <apex:outputText style="color: #ccc;" value="« Previous"
+                                 rendered="{! NOT(HasPrevious) }"/>
+
+                &nbsp;&nbsp;
+
+                <!-- Next page -->
+                <!-- active -->
+                <apex:commandLink action="{! Next }" value="Next »"
+                                  rendered="{! HasNext }"/>
+                <!-- inactive (no more pages) -->
+                <apex:outputText style="color: #ccc;" value="Next »"
+                                 rendered="{! NOT(HasNext) }"/>
+            </td>
+
+            <td align="right">
+                Records per page:
+                <apex:selectList value="{! PageSize }" size="1">
+                    <apex:selectOption itemValue="5" itemLabel="5"/>
+                    <apex:selectOption itemValue="20" itemLabel="20"/>
+                    <apex:actionSupport event="onchange" reRender="product_list"/>
+                </apex:selectList>
+            </td>
+
+        </tr></table>
+
+
+
+
+
+
+
+    </apex:pageBlock>
+</apex:form>
+</apex:page>
+
+
